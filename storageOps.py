@@ -55,6 +55,7 @@ def view_product_catalog(category_id):
         result = cursor.fetchall()
         print("")
         product_table = PrettyTable()
+        product_table.title = 'Product Catalog'
         product_table.field_names = ['Product ID', 'Name', 'Unit Price', 'Category ID']
         for r in result:
             product_table.add_row([r[0], r[1], r[2], r[3]])
@@ -88,6 +89,7 @@ def view_categories(category_id):
                 return True
         print("")
         category_table = PrettyTable()
+        category_table.title = 'Product Categories'
         category_table.field_names = ['ID', 'Category']
         for r in result:
             category_table.add_row([r[1], r[0]])
@@ -142,10 +144,12 @@ def view_orders(user_id):
         connection.close()
         print("")
         order_table = PrettyTable()
+        order_table.title = 'Order Details'
         order_table.field_names = ['Order ID', 'Order Date', 'Total', 'Payment ID']
         for r in result:
             order_table.add_row([r[0], r[1], r[2], r[3]])
         print(order_table)
+        getOrderDetails(user_id)
     except BaseException as err:
         print(err)
 
@@ -163,6 +167,7 @@ def view_cart(user_id):
         connection.close()
         print("")
         cart_table = PrettyTable()
+        cart_table.title = 'Cart Details'
         cart_table.field_names = ['User ID', 'Product ID', 'Product Name', 'Quantity']
         for r in result:
             cart_table.add_row([r[0], r[1], r[3], r[2]])
@@ -253,6 +258,30 @@ def checkout(order_id, amount, provider, status):
         cursor.execute(string_to_execute)
 
         cursor.execute("COMMIT;")
+        cursor.close()
+        connection.close()
+    except BaseException as err:
+        print(err)
+
+def getOrderDetails(user_id):
+    try:
+        connection = sqlite3.connect(DB_NAME)
+        cursor = connection.cursor()
+        string_to_execute = "select OrderItems.product_id, P.name, PC.name, OrderItems.quantity " \
+                            "from OrderItems " \
+                            "inner join OrderDetails OD on OrderItems.order_id = OD.order_id " \
+                            "inner join Product P on OrderItems.product_id = P.product_id " \
+                            "inner join ProductCategory PC on P.category_id = PC.category_id " \
+                            "where OD.user_id = " + str(user_id) + ";"
+        cursor.execute(string_to_execute)
+        result = cursor.fetchall()
+        print("")
+        product_table = PrettyTable()
+        product_table.title = 'Order Items'
+        product_table.field_names = ['Product ID', 'Product Name', 'Product Category', 'Quantity']
+        for r in result:
+            product_table.add_row([r[0], r[1], r[2],r[3]])
+        print(product_table)
         cursor.close()
         connection.close()
     except BaseException as err:

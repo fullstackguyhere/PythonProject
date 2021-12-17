@@ -1,8 +1,8 @@
 ,name,seq
-0,OrderDetails,30
+0,OrderDetails,31
 1,ProductCategory,33
 2,Product,105
-3,OrderItems,99
-4,CartItems,49
-5,User,35
-6,PaymentDetails,8
+3,OrderItems,101
+4,CartItems,54
+5,User,38
+6,PaymentDetails,9

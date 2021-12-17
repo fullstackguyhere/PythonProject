@@ -1,1 +1,4 @@
 ,cart_id,user_id,product_id,quantity,product_name,unitprice
+0,50,37,11,1,ASUS MOnitor,165
+1,51,37,18,1,Dell XPS,4000
+2,52,37,40,1,Tshirt,12

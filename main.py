@@ -3,7 +3,7 @@ from reportTableOps import reportGenerator, showBestSellingCategories, ageCatego
 from storageOps import *
 
 print()
-print("Welcome to User Login System")
+print("Welcome to Ecommerce System")
 print()
 running = True
 while running:
