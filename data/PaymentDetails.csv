@@ -1,0 +1,9 @@
+,payment_id,order_id,amount,provider,status,paymentdate
+0,1,18,1093,Amex,Recieved,16-12-2021
+1,2,19,4228,Visa,Recieved,16-12-2021
+2,3,20,1330,Mastercard,Recieved,16-12-2021
+3,4,21,912,Mastercard,Recieved,16-12-2021
+4,5,22,1023,BHIM,Recieved,16-12-2021
+5,6,23,484,Mastercard,Recieved,16-12-2021
+6,7,24,2069,Mastercard,Recieved,16-12-2021
+7,8,25,4294,Amex,Recieved,16-12-2021

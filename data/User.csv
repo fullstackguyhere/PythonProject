@@ -1,0 +1,10 @@
+,user_id,email,password,firstname,lastname,address,telephone,date_of_birth
+0,25,r@r.com,L,Rohan,Pota,"234, Lsr street",5197225761,1994-07-16
+1,26,j@j.com,F,Jigar,Chandvania,123 Fester Strt,5187665654,1994-08-19
+2,27,s@s.com,P,Saul,Melcher,123 Happy St,6667778900,2000-01-01
+3,28,h@h.com,N,Hailey,Smith,123 FDg,6757668790,1998-07-15
+4,29,m@m.com,C,Max,Verstappen,asd Monaco St,1234567890,2005-05-23
+5,30,l@l.com,B,Lando,Norris,4356 London Strret,1234567890,2006-08-14
+6,31,le@le.com,BO,Lewis,Hamilton,"123, Moncao Street",4561237890,1986-09-19
+7,32,ra@ra.com,LT,Rafael,Nadal,456 Mallorca Street,8907891656,1987-06-01
+8,35,a,T,a,a,a,a,2006-06-06

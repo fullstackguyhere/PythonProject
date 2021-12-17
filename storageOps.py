@@ -7,6 +7,7 @@ import datetime
 from prettytable import *
 from Product import ProductInOrder
 
+
 def create_user(login, password, firstname, lastname, address, telephone, date_of_birth):
     try:
         encrypted_password = encrypt_password(password)
@@ -14,8 +15,8 @@ def create_user(login, password, firstname, lastname, address, telephone, date_o
         cursor = connection.cursor()
         string_to_execute = "INSERT INTO User (email, password, firstname," \
                             "lastname, address, telephone, date_of_birth) values (" \
-                            + "'" + login + "'" + "," + "'" + encrypted_password + "'"+ "," \
-                            +"'" + firstname + "'" + "," + "'" + lastname + "'" + "," + "'"\
+                            + "'" + login + "'" + "," + "'" + encrypted_password + "'" + "," \
+                            + "'" + firstname + "'" + "," + "'" + lastname + "'" + "," + "'" \
                             + address + "'" + "," + "'" + telephone + "'" + "," + "'" + date_of_birth + "'" ");"
         cursor.execute(string_to_execute)
         cursor.execute("COMMIT;")
@@ -23,6 +24,7 @@ def create_user(login, password, firstname, lastname, address, telephone, date_o
         connection.close()
     except BaseException as err:
         print(err)
+
 
 def validate_login_details(login, password):
     try:
@@ -62,11 +64,13 @@ def view_product_catalog(category_id):
     except BaseException as err:
         print(err)
 
+
 def view_categories(category_id):
     try:
         connection = sqlite3.connect(DB_NAME)
         cursor = connection.cursor()
-        string_to_execute = "SELECT name, category_id FROM ProductCategory WHERE parent_category_id = " + str(category_id) +\
+        string_to_execute = "SELECT name, category_id FROM ProductCategory WHERE parent_category_id = " + str(
+            category_id) + \
                             " AND category_id!= parent_category_id" + ";" \
             if category_id is not None else "SELECT name, category_id FROM ProductCategory WHERE category_id = parent_category_id;"
         cursor.execute(string_to_execute)
@@ -93,6 +97,7 @@ def view_categories(category_id):
     except BaseException as err:
         print(err)
 
+
 def create_order(products, user_id, payment_id):
     try:
         order_date = datetime.date.today().strftime("%d-%m-%Y")
@@ -107,19 +112,22 @@ def create_order(products, user_id, payment_id):
                             + str(total) + "," + str(payment_id) \
                             + ");"
         cursor.execute(string_to_execute)
+
         order_id = cursor.lastrowid
         cursor.execute("COMMIT;")
         for product in products:
             string_to_execute = "INSERT INTO OrderItems values (" \
-                                + "null," + str(order_id) + "," + str(product.product_id )+ "," \
+                                + "null," + str(order_id) + "," + str(product.product_id) + "," \
                                 + str(product.quantity) + ");"
             cursor.execute(string_to_execute)
+
             cursor.execute("COMMIT;")
         cursor.close()
         connection.close()
         return order_id
     except BaseException as err:
         print(err)
+
 
 def view_orders(user_id):
     try:
@@ -128,6 +136,7 @@ def view_orders(user_id):
         string_to_execute = "SELECT order_id, order_date, total, payment_id " \
                             "FROM OrderDetails WHERE user_id = " + str(user_id) + ";"
         cursor.execute(string_to_execute)
+
         result = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -140,6 +149,7 @@ def view_orders(user_id):
     except BaseException as err:
         print(err)
 
+
 def view_cart(user_id):
     try:
         connection = sqlite3.connect(DB_NAME)
@@ -147,6 +157,7 @@ def view_cart(user_id):
         string_to_execute = "SELECT user_id, product_id, quantity, product_name " \
                             "FROM CartItems WHERE user_id = " + str(user_id) + ";"
         cursor.execute(string_to_execute)
+
         result = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -159,6 +170,7 @@ def view_cart(user_id):
     except BaseException as err:
         print(err)
 
+
 def add_to_cart(user_id, products):
     try:
         connection = sqlite3.connect(DB_NAME)
@@ -167,18 +179,21 @@ def add_to_cart(user_id, products):
             string_to_execute = "SELECT name, unitprice FROM Product WHERE product_id = " + str(
                 product.product_id) + ";"
             cursor.execute(string_to_execute)
+
             result = cursor.fetchall()
             product.name = result[0][0]
             product.unitprice = result[0][1]
             string_to_execute = "INSERT INTO CartItems values (" \
                                 + "null," + str(user_id) + "," + str(product.product_id) + "," \
-                                + str(product.quantity) + "," + "'" +  product.name + "'" + "," + str(product.unitprice) + ");"
+                                + str(product.quantity) + "," + "'" + product.name + "'" + "," + str(
+                product.unitprice) + ");"
             cursor.execute(string_to_execute)
             cursor.execute("COMMIT;")
         cursor.close()
         connection.close()
     except BaseException as err:
         print(err)
+
 
 def check_cart_items(user_id):
     connection = sqlite3.connect(DB_NAME)
@@ -187,11 +202,13 @@ def check_cart_items(user_id):
     string_to_execute = "SELECT * " \
                         "FROM CartItems WHERE user_id = " + str(user_id) + ";"
     cursor.execute(string_to_execute)
+
     result = cursor.fetchall()
     if len(result) == 0:
         return False
     else:
         return True
+
 
 def checkout_cart_items(user_id, payment_id):
     try:
@@ -205,6 +222,7 @@ def checkout_cart_items(user_id, payment_id):
         string_to_execute = "SELECT product_id, quantity, unitprice, product_name " \
                             "FROM CartItems WHERE user_id = " + str(user_id) + ";"
         cursor.execute(string_to_execute)
+
         result = cursor.fetchall()
         products = []
         total = 0
@@ -215,11 +233,13 @@ def checkout_cart_items(user_id, payment_id):
         checkout(order_id, total, Provider(payment_id).name, "Recieved")
         string_to_execute = "DELETE FROM CartItems  WHERE user_id = " + str(user_id) + ";"
         cursor.execute(string_to_execute)
+
         cursor.execute("COMMIT;")
         cursor.close()
         connection.close()
     except BaseException as err:
         print(err)
+
 
 def checkout(order_id, amount, provider, status):
     try:
@@ -228,11 +248,13 @@ def checkout(order_id, amount, provider, status):
         cursor = connection.cursor()
         string_to_execute = "INSERT INTO PaymentDetails values (" \
                             + "null," + str(order_id) + "," + str(amount) + "," \
-                            + provider + "," + status + "," \
-                            + payment_date + ");"
+                            + "'" + provider + "'" + "," + "'" + status + "'" + "," \
+                            + "'" + payment_date + "'" + ");"
         cursor.execute(string_to_execute)
+
         cursor.execute("COMMIT;")
         cursor.close()
         connection.close()
     except BaseException as err:
         print(err)
+

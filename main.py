@@ -1,6 +1,6 @@
 from helpers import add_product_path
+from reportTableOps import reportGenerator, showBestSellingCategories, ageCategorizationUsers, popularPaymentMethods
 from storageOps import *
-from Product import ProductInOrder
 
 print()
 print("Welcome to User Login System")
@@ -10,7 +10,9 @@ while running:
     print()
     primary_choice = int(input("""Choose an option:
     1. Create New User or Login
-    2. Exit
+    2. Generate Report Data
+    3. Show Table of reports
+    4. Exit
     """))
     if primary_choice == 1:
         choice = input("New User Y or N ?: ").upper()
@@ -69,6 +71,27 @@ while running:
                 print("Account does not exist")
                 continue
     if primary_choice == 2:
+        reportGenerator()
+        running = False
+    if primary_choice == 3:
+        second_running = True
+        while second_running:
+            choice = int(input("""Choose report to display:
+                                    1. Best Selling Products Categories
+                                    2. User Age Group composition
+                                    3. Popular Payment Methods
+                                    4. Exit
+                                    """))
+            if choice == 1:
+                showBestSellingCategories()
+            if choice == 2:
+                ageCategorizationUsers()
+            if choice == 3:
+                popularPaymentMethods()
+            if choice == 4:
+                second_running = False
+        running = False
+    if primary_choice == 4:
         print()
         print("Goodbye!")
         running = False
